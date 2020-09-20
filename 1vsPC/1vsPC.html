@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+  	<head>
+		<script src="../js/jquery.min.js"></script>
+		<link href="../css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+        <script src="../js/bootstrap.min.js"></script>
+
+		<script type='text/javascript' src='../js/tween.js/tween.js/dist/tween.umd.js'></script>
+
+    	<meta charset="utf-8">
+    	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+		<script type="module" src="1vsPC.js"></script>
+		<link rel="stylesheet" type="text/css" href="1vsPC.css">
+		<script src="../js/utilities.js"></script>
+		<title>Chocobo Farm</title>
+		<link rel="shortcut icon" href="../img/chocobo_eating.png" />
+		
+  	</head>
+  	<body>
+		<canvas id="c"></canvas>
+		<div style="position: fixed; top:5%; left: 92%;">
+            <img id="home" src="../img/home.png" class="image" width="60%" height="60%" onclick="location.href='../home.html';" style="display:inline;">                  
+        </div>
+		<div style="position: fixed; top:80%; left: 90%;">
+            <img id="audiooff" src="../img/audiooff.png" class="image" width="70%" height="70%" onclick="play()" style="display:inline;">                  
+        </div>
+        <div style="position: fixed; top:80%; left: 90%;" >
+            <img id ="audioon" src="../img/audioon.png" class="image" width="70%" height="70%" onclick="stop()" style="display: none;">                  
+        </div>
+        <audio loop src="../sounds/farm theme.mp3" type="audio/mp3" id="audio" ></audio>
+        <audio src="../sounds/chocobo sound.mp3" type="audio/mp3" id="audio2" ></audio>
+        <audio src="../sounds/bomb explosion.mp3" type="audio/mp3" id="audio3" ></audio>
+		<audio loop src="../sounds/game over.mp3" type="audio/mp3" id="audio4" ></audio>
+			
+		<div class="popup_content_3" id="popup_content_1" style="position: fixed; display: none;">
+			<center>
+				<h5 style="color:#00cbfe;" id="mines">PC mines positioned: 0/5</h1>   
+				<h5 style="color:#00cbfe; display:none;" id="turn">Player's turn</h1>     
+			</center> 
+		</div>
+
+		<!---page load popup_content---->
+		<div class="popup_content_wrap" id="popup_content_wrap" style='display:none'>
+			<div class="popup_content_2" id="popup_content">
+				<img src="../img/cancel.png" id="cancel" class="image" width="3%" align="right" onclick="popup_content('hide','popup_content_wrap'); show();"> 
+
+				<center>
+					<h1 id="boxtitle">The controls (1/4)</h1> 
+					<hr><hr>
+					<p id="boxtext">Welcome to the Chocobo farm! You are a farmer tasked with the job of planting gysahl greens to feed the chocobos in your farm. However, there is a lot of competition in the field, and your enemies are ready to do anything in order to get in your way. Someone has been coming during the night placing traps in your field. If you trigger a trap, your Chocobos will escape and eat all of your gysahl greens. What a disaster! Let's now go over the controls of the game.</p>
+					<img src="../img/place_mines.png" id="place_mines_pic" style="width: 50%; height:50%; display: none;">
+					<img src="../img/place_gysahl.png" id="place_gysahl_pic" style="width: 50%; height:50%; display: none;">
+					<img src="../img/game_flow.png" id="game_flow_pic" style="width: 50%; height:50%; display: none;">
+					<img src="../img/mines_counter.png" id="mines_counter_pic" style="width: 50%; height:50%; display: none;">
+				</center>
+				<input style="float:left; margin-left:130px; display: none;" type="submit" id="prev" value="< Previous" class="btn btn-primary" onClick="prevPage(); updateText();" />
+				<input style="float: right; margin-right:130px;" type="submit" id="next" value="Next >" class="btn btn-primary" onClick="nextPage(); updateText();" />
+				<input style="float: right; margin-right:130px; display: none;" type="submit" id="play" value="Let's play!" class="btn btn-primary" onClick="popup_content('hide', 'popup_content_wrap'); document.getElementById('audio2').play(); show();" />
+				<center>
+					<input style="display: none;" type="submit" id="home" value="Go to home screen" class="btn btn-primary" onClick="location.href='../home.html';" />
+					<input style="display: none;" type="submit" id="done" value="Got it!" class="btn btn-primary" onClick="popup_content('hide', 'popup_content_wrap');" />
+					<input style="display: none;" type="submit" id="start" value="Start the game!" class="btn btn-primary" onClick="popup_content('hide', 'popup_content_wrap');" />
+				</center>
+			</div>
+			<div style="position: fixed; bottom:7%; left: 75%;" >
+				<img src="../img/chocobo_explaining.png" id="expl" style="width: 64%;">
+				<img src="../img/chocobo_lost.png" id="lost" style="display:none; width:110%">                  
+				<img src="../img/chocobo_chest.png" id="chest" style="display:none; width:110%">      
+				<img src="../img/chocobo_ready.png" id="ready" style="display:none; width:110%">             
+			</div>
+		</div>
+		<!---end page load popup_content---->
+  	</body>
+</html>
+

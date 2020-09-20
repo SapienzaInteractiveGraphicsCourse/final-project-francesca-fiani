@@ -1,0 +1,70 @@
+html, body {
+  margin: 0;
+  height: 100%;
+}
+#c {
+width: 100%;
+height: 100%;
+display: block;
+}
+h1{
+color:#00cbfe;
+font-size:2.7vw;
+}
+h5{
+  color:#00cbfe;
+  font-size:1.4vw;
+  }
+p{
+color:#fff;
+margin-bottom: 3em;
+font-size:1.05vw;}
+.popup_content_wrap {
+    width: 100%;
+    height: 100%;   
+    top: 0;
+    left: 0;   
+    position: fixed;	
+    background: rgba(0, 0, 0, 0.74);
+    z-index: 9999999;
+}
+.popup_content {
+    width: 50%;
+    height: 300px;
+    padding:20px;
+    position: relative;
+    top: 20%;
+    left: 25%;
+    background: #1b100ed9;
+    border: 10px solid #00cbfe;  
+}
+
+.popup_content_2{
+  width: 70%;
+  height: 80%;
+  padding:20px;
+  position: relative;
+  top: 10%;
+  left: 15%;
+  background: #1b100ed9;
+  border: 10px solid #00cbfe;  
+}
+
+.popup_content_3{
+  width: 19%;
+  height: 10%;
+  padding:20px;
+  position: relative;
+  top: 3%;
+  left: 1.5%;
+  background: #1b100ed9;
+  border: 4px solid #00cbfe;  
+}
+
+.image:hover{
+ cursor: pointer;
+}
+
+.container {
+position: relative;
+}
