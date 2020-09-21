@@ -21,16 +21,7 @@
         <div style="position:fixed; bottom:0vh; right:33vw;">
             <img src="img/playnow.png" class="image" style="width:35vw; height: 40vh;" onclick="document.getElementById('popup_content_wrap_1').style.display='inline';"></a>               
         </div>
-        <div style="position: fixed; top:80%; left: 90%;">
-            <img id="audiooff" src="img/audiooff.png" class="image" width="70%" height="70%" onclick="play()" style="display:inline;">                  
-        </div>
-        <div style="position: fixed; top:80%; left: 90%;" >
-            <img id ="audioon" src="img/audioon.png" class="image" width="70%" height="70%" onclick="stop()" style="display: none;">                  
-        </div>
-            <audio loop src="sounds/farm theme.mp3" type="audio/mp3" id="audio" ></audio>
-            <audio src="sounds/chocobo sound.mp3" type="audio/mp3" id="audio2" ></audio>
-            <!---page load popup_content---->
-            <div class="popup_content_wrap" id="popup_content_wrap" style='display:none'>
+            <div class="popup_content_wrap" id="popup_content_wrap">
                 <div class="popup_content" id="popup_content">
                     <center>
                         <h1>Warning</h1> 
@@ -39,7 +30,6 @@
                     </center>
                 </div>
             </div>
-            <!---end page load popup_content---->
 
             <div class="popup_content_wrap" id="popup_content_wrap_1" style='display:none'>
                 <div class="popup_content" id="popup_content_1">

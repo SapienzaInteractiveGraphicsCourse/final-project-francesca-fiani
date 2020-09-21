@@ -62,6 +62,7 @@ var turn = 1;
 var exploded = 0;
 var animating = 0;
 var cameramoving = 0;
+var doneloading = 0;
 
 var minemodels = [];
 
@@ -419,7 +420,7 @@ function main() {
           }
           else{
             exploded=1;
-            explode();
+            explode(Math.floor((id-2)/8) - 3,(id-2)%8 - 4);
           }
         }
       }
@@ -475,7 +476,7 @@ function main() {
           }
           else{
             exploded=2;
-            explode();
+            explode(Math.floor((id-2)/8) - 3,(id-2)%8 - 4);
           }
         }
       }
@@ -643,7 +644,7 @@ function main() {
                 document.getElementById('boxtitle').innerHTML="P1's turn";
                 document.getElementById('boxtext').innerHTML="P1, it's your turn to set the mines in P2's field. You have five mines, and you can set them by clicking on the patch where you want to dig them. The currently selected patch will become yellow. To remember where you dug them, you decide to place rock mounds on top of them. The counter will tell you how many mines you have left. Be careful where you click, since you can't undo the positioning!";
                 document.getElementById('mines').innerHTML="P2 mines positioned: 0/5";
-                document.getElementById('popup_content_wrap').style.display='inline';
+                document.getElementById('popup_content_wrap').style.display='block';
               },1000);
             },1000);
           }
@@ -711,10 +712,10 @@ function main() {
                 document.getElementById('done').style.display='none';
                 document.getElementById('mines').style.display='none';
                 document.getElementById('chest').style.display='none';
-                document.getElementById('place_gysahl_pic').style.display='inline';
-                document.getElementById('ready').style.display='inline';
-                document.getElementById('turn').style.display='inline';
-                document.getElementById('start').style.display='inline';
+                document.getElementById('place_gysahl_pic').style.display='block';
+                document.getElementById('ready').style.display='block';
+                document.getElementById('turn').style.display='block';
+                document.getElementById('start').style.display='block';
               },1000);
             },1000);
           }
@@ -899,7 +900,7 @@ let armature, bones;
         tween1[54] = new TWEEN.Tween(root.position, groupChocobo1).to({z:36,y:1.2}, 250);
         tween1[55] = new TWEEN.Tween(root.position, groupChocobo1).to({z:37,y:1.3}, 250);
         tween1[56] = new TWEEN.Tween(root.position, groupChocobo1).to({z:38,y:1.2}, 250);
-        tween1[57] = new TWEEN.Tween(root.position, groupChocobo1).to({z:39,y:1.3}, 250);
+        tween1[57] = new TWEEN.Tween(root.position, groupChocobo1).to({z:39,y:1.3}, 250).onComplete(function(){groupChocobo1.removeAll()});
         tween1[27].chain(tween1[28]);
         tween1[28].chain(tween1[29]);
         tween1[29].chain(tween1[30]);
@@ -1040,7 +1041,7 @@ let armature, bones;
         tween2[54] = new TWEEN.Tween(root.position, groupChocobo2).to({z:-36,y:1.2}, 250);
         tween2[55] = new TWEEN.Tween(root.position, groupChocobo2).to({z:-37,y:1.3}, 250);
         tween2[56] = new TWEEN.Tween(root.position, groupChocobo2).to({z:-38,y:1.2}, 250);
-        tween2[57] = new TWEEN.Tween(root.position, groupChocobo2).to({z:-39,y:1.3}, 250);
+        tween2[57] = new TWEEN.Tween(root.position, groupChocobo2).to({z:-39,y:1.3}, 250).onComplete(function(){groupChocobo2.removeAll()});
         tween2[27].chain(tween2[28]);
         tween2[28].chain(tween2[29]);
         tween2[29].chain(tween2[30]);
@@ -1625,7 +1626,6 @@ let armature, bones;
       });
     }
 
-    
   //setting the render size
 
   function resizeRendererToDisplaySize(renderer) {
@@ -1817,13 +1817,13 @@ clearPickPosition();
 
         if(z==20){
           root.rotation.y+=(Math.PI);
-          gysahlp1[i+3][j+4] = new TWEEN.Tween(root.position, groupChocobo1).to({y:2}, 500);
+          gysahlp1[i+3][j+4] = root;
           setTimeout(function(){
             moveCamera(1);
           },500);
         }
         else if (z==-28){
-          gysahlp2[i+3][j+4] = new TWEEN.Tween(root.position, groupChocobo2).to({y:2}, 500);
+          gysahlp2[i+3][j+4] = root;
           setTimeout(function(){
             moveCamera(2);
           },500);
@@ -1840,8 +1840,8 @@ function moveGysahl(mat,x){
           if(mat[i]){
             for(var j=0; j<8;j++){
               if (mat[i][j]!=0){
-                mat[i][j].delay(1000*i).start();
-                //.onComplete(function(){setTimeout(function(){scene.remove(scene.children[5])},500);});
+                const aux = mat[i][j];
+                var tween = new TWEEN.Tween(mat[i][j].position, groupChocobo1).to({y:2}, 500).delay(1000*i).start().onComplete(function(){setTimeout(function(){scene.remove(aux)},500);});
               }
             }
           }
@@ -1856,7 +1856,8 @@ function moveGysahl(mat,x){
           if(mat[i]){
             for(var j=7; j>-1;j--){
               if (mat[i][j]!=0){
-                mat[i][j].delay(1000*(5-i)).start();
+                const aux = mat[i][j];
+                var tween = new TWEEN.Tween(mat[i][j].position, groupChocobo2).to({y:2}, 500).delay(1000*(5-i)).start().onComplete(function(){setTimeout(function(){scene.remove(aux)},500);});
               }
             }
           }
@@ -1867,86 +1868,154 @@ function moveGysahl(mat,x){
 }
 
 //function when you lose
-function explode(){
-  stop();
+function explode(i, j){
+  document.getElementById('home').classList.remove('image');
+  document.getElementById('home').onclick=function(){return false};
+  document.getElementById('audioon').classList.remove('image');
+  document.getElementById('audioon').onclick=function(){return false};
+  document.getElementById('audiooff').classList.remove('image');
+  document.getElementById('audiooff').onclick=function(){return false};
 
-  const planeSize = 80;
+  animating=1;
+  const gltfLoader = new GLTFLoader();
+    gltfLoader.load('../models/Quina.gltf', (gltf) => {
+      const root = gltf.scene;
 
-  const planeGeo = new THREE.PlaneBufferGeometry(planeSize, planeSize);
-  const planeMat = new THREE.MeshPhongMaterial({
-    opacity: 0,
-    transparent:true,
-    color: 0xffffff,
-    side: THREE.DoubleSide,
-  });
-  const mesh = new THREE.Mesh(planeGeo, planeMat);
-  var current = {
-    opacity: 0
-  };
-  if(exploded==1){
-    mesh.position.z = planeSize/2;
-    tween1[58] = new TWEEN.Tween(current, groupChocobo1).to({opacity: 1}, 2000).onUpdate(function(){mesh.material.opacity = current.opacity;}).start();
-    tween1[59] = new TWEEN.Tween(current, groupChocobo1).to({opacity: 0}, 2000).onUpdate(function(){mesh.material.opacity = current.opacity;});
-    tween1[58].chain(tween1[59]);
-  }
-  else if (exploded==2){
-    mesh.position.z = -planeSize/2;
-    tween2[58] = new TWEEN.Tween(current, groupChocobo2).to({opacity: 1}, 2000).onUpdate(function(){mesh.material.opacity = current.opacity;}).start();
-    tween2[59] = new TWEEN.Tween(current, groupChocobo2).to({opacity: 0}, 2000).onUpdate(function(){mesh.material.opacity = current.opacity;});
-    tween2[58].chain(tween2[59]);
-  }
-  scene.add(mesh);
-  document.getElementById('audio3').play(); 
+      root.traverse((obj) => {
+        if (obj.castShadow !== undefined) {
+          obj.castShadow = true;
+          obj.receiveShadow = true;
+        }
+      });
+
+      scene.add(root);
+
+      // compute the box that contains all the stuff
+      // from root and below
+        const box = new THREE.Box3().setFromObject(root);
+
+        const size = box.getSize(new THREE.Vector3());
+        const boxCenter = box.getCenter(new THREE.Vector3());
+
+        //Rescale the object to normalized space
+        var maxAxis = Math.max(size.x, size.y, size.z);
+        root.scale.multiplyScalar(3.0/maxAxis);
+        box.setFromObject(root);
+        box.getCenter(boxCenter);
+        box.getSize(size);
+        //Reposition to 0,halfY,0
+        root.position.copy(boxCenter).multiplyScalar(-1);
+        if(exploded==1){
+          root.position.set(step*j+step/2,0.4,step*i+step+step/4+20);
+        }
+        else if (exploded==2){
+          root.position.set(step*j+step/2,0.4,step*i+step+3*step/4-28);
+          root.rotation.y+= (Math.PI);
+        }
+      
+        armature = root.getObjectByName('Armature');
+        bones=traverseTree(armature,bones);
+        
   
-  setTimeout(function(){ 
-    document.getElementById('audio4').play(); 
+        //in position 
+        tween3[0] = new TWEEN.Tween(bones['Body'].rotation).to({z:0.7}, 500).start().easing(TWEEN.Easing.Quadratic.In);
+        tween3[1] = new TWEEN.Tween(bones['Armdx2'].rotation).to({z:-3}, 500).start().easing(TWEEN.Easing.Quadratic.In);
+        tween3[2] = new TWEEN.Tween(bones['Armdx3'].rotation).to({y:-1.1, z:2}, 500).start().easing(TWEEN.Easing.Quadratic.In);
+        tween3[3] = new TWEEN.Tween(bones['Armsx2'].rotation).to({y:-0.6, z:-2.3}, 500).start().easing(TWEEN.Easing.Quadratic.In);
+        tween3[4] = new TWEEN.Tween(bones['Armsx3'].rotation).to({x:-0.5, y:0, z:0.3}, 500).start().easing(TWEEN.Easing.Quadratic.In);
+        tween3[5] = new TWEEN.Tween(bones['Handsx'].rotation).to({x:1, y:-1, z:1}, 500).start().easing(TWEEN.Easing.Quadratic.In);
+  
+        
+        //digging
+        tween3[6] = new TWEEN.Tween(bones['Armdx2'].rotation).to({z:-2.6}, 250).easing(TWEEN.Easing.Quadratic.In).onComplete(function(){scene.remove(root); tween3=[]; TWEEN.removeAll(); animating=0;});
+
+        tween3[0].chain(tween3[6]);
+      });
+
+  setTimeout(function(){
+    stop();
+
+    const planeSize = 80;
+
+    const planeGeo = new THREE.PlaneBufferGeometry(planeSize, planeSize);
+    const planeMat = new THREE.MeshPhongMaterial({
+      opacity: 0,
+      transparent:true,
+      color: 0xffffff,
+      side: THREE.DoubleSide,
+    });
+    const mesh = new THREE.Mesh(planeGeo, planeMat);
+    var current = {
+      opacity: 0
+    };
+
     if(exploded==1){
-      moveGysahl(gysahlp1,exploded);
-      tween1[0].start();
-      tween1[1].start();
-      tween1[2].start();
-      tween1[3].start();
-      tween1[4].start();
-      tween1[5].start();
-      tween1[6].start();
-      tween1[27].start();
-      if(groupChocobo1.getAll()!=[]){
-        setTimeout(function(){ 
-          document.getElementById('boxtitle').innerHTML='The bomb exploded!';
-          document.getElementById('boxtext').innerHTML="You triggered the trap set by your opponent! Now all your chocobos are lost, and your gysahl greens too... But don't worry, you can always try again!";
-          document.getElementById('home').style.display='inline';
-          document.getElementById('ready').style.display='none';
-          document.getElementById('start').style.display='none';
-          document.getElementById('place_gysahl_pic').style.display='none';
-          document.getElementById('lost').style.display='inline';
-          document.getElementById('popup_content_wrap').style.display='inline';
-        },8000);
-      }
+      mesh.position.z = planeSize/2;
+      tween1[58] = new TWEEN.Tween(current, groupChocobo1).to({opacity: 1}, 2000).onUpdate(function(){mesh.material.opacity = current.opacity;}).start();
+      tween1[59] = new TWEEN.Tween(current, groupChocobo1).to({opacity: 0}, 2000).onUpdate(function(){mesh.material.opacity = current.opacity;});
+      tween1[58].chain(tween1[59]);
     }
     else if (exploded==2){
-      moveGysahl(gysahlp2,exploded);
-      tween2[0].start();
-      tween2[1].start();
-      tween2[2].start();
-      tween2[3].start();
-      tween2[4].start();
-      tween2[5].start();
-      tween2[6].start();
-      tween2[27].start();
-      if(groupChocobo2.getAll()!=[]){
-        setTimeout(function(){ 
-          document.getElementById('boxtitle').innerHTML='The bomb exploded!';
-          document.getElementById('boxtext').innerHTML="You triggered the trap set by your opponent! Now all your chocobos are lost, and your gysahl greens too... But don't worry, you can always try again!";
-          document.getElementById('home').style.display='inline';
-          document.getElementById('ready').style.display='none';
-          document.getElementById('start').style.display='none';
-          document.getElementById('place_gysahl_pic').style.display='none';
-          document.getElementById('lost').style.display='inline';
-          document.getElementById('popup_content_wrap').style.display='inline';
-        },8000);
-      }
+      mesh.position.z = -planeSize/2;
+      tween2[58] = new TWEEN.Tween(current, groupChocobo2).to({opacity: 1}, 2000).onUpdate(function(){mesh.material.opacity = current.opacity;}).start();
+      tween2[59] = new TWEEN.Tween(current, groupChocobo2).to({opacity: 0}, 2000).onUpdate(function(){mesh.material.opacity = current.opacity;});
+      tween2[58].chain(tween2[59]);
     }
-  },4000);
+    scene.add(mesh);
+    document.getElementById('audio3').play(); 
+    
+    setTimeout(function(){ 
+      document.getElementById('audio4').play(); 
+      if(exploded==1){
+        moveGysahl(gysahlp1,exploded);
+        tween1[0].start();
+        tween1[1].start();
+        tween1[2].start();
+        tween1[3].start();
+        tween1[4].start();
+        tween1[5].start();
+        tween1[6].start();
+        tween1[27].start();
+        if(groupChocobo1.getAll()!=[]){
+          setTimeout(function(){ 
+            document.getElementById('boxtitle').innerHTML='The bomb exploded!';
+            document.getElementById('boxtext').innerHTML="You triggered the trap set by your opponent! Now all your chocobos are lost, and your gysahl greens too... But don't worry, you can always try again!";
+            document.getElementById('gohome').style.display='block';
+            document.getElementById('retry').style.display='block';
+            document.getElementById('ready').style.display='none';
+            document.getElementById('start').style.display='none';
+            document.getElementById('place_gysahl_pic').style.display='none';
+            document.getElementById('lost').style.display='block';
+            document.getElementById('popup_content_wrap').style.display='block';
+          },8000);
+        }
+      }
+      else if (exploded==2){
+        moveGysahl(gysahlp2,exploded);
+        tween2[0].start();
+        tween2[1].start();
+        tween2[2].start();
+        tween2[3].start();
+        tween2[4].start();
+        tween2[5].start();
+        tween2[6].start();
+        tween2[27].start();
+        if(groupChocobo2.getAll()!=[]){
+          setTimeout(function(){ 
+            document.getElementById('boxtitle').innerHTML='The bomb exploded!';
+            document.getElementById('boxtext').innerHTML="You triggered the trap set by your opponent! Now all your chocobos are lost, and your gysahl greens too... But don't worry, you can always try again!";
+            document.getElementById('gohome').style.display='block';
+            document.getElementById('retry').style.display='block';
+            document.getElementById('ready').style.display='none';
+            document.getElementById('start').style.display='none';
+            document.getElementById('place_gysahl_pic').style.display='none';
+            document.getElementById('lost').style.display='block';
+            document.getElementById('popup_content_wrap').style.display='block';
+          },8000);
+        }
+      }
+    },4000);
+  },900);
 }
 
   //rendering
@@ -1954,19 +2023,25 @@ function explode(){
   function render(time) {
     time *= 0.001;  // convert to seconds
 
+    if (scene.children.length>=121 && doneloading==0){
+      document.getElementById('loader_wrap').style.display='none';
+      document.getElementById('popup_content_wrap').style.display='block';
+      doneloading=1;
+    }
+
     if (resizeRendererToDisplaySize(renderer)) {
       const canvas = renderer.domElement;
       camera.aspect = canvas.clientWidth / canvas.clientHeight;
       camera.updateProjectionMatrix();
     }
 
-    if(tween1.length==60 && exploded==1 && scene.children[119].position.z!=39){
+    if(tween1.length==60 && exploded==1){
       groupChocobo1.update();
     }
-    else if(tween2.length==60 && exploded==2 && scene.children[120].position.z!=-39){
+    else if(tween2.length==60 && exploded==2){
       groupChocobo2.update();
     }
-    else if (tween3.length==16){
+    else if (tween3.length==16||(tween3.length==7 && (exploded==1||exploded==2))){
       TWEEN.update();
     }
 
@@ -1986,7 +2061,7 @@ function explode(){
       }
     }
 
-    else if(document.getElementById('popup_content_wrap').style.display=="none" && document.getElementById('done').style.display=='inline' && cameramoving==0){
+    else if(document.getElementById('popup_content_wrap').style.display=="none" && document.getElementById('done').style.display=='block' && cameramoving==0){
       if(turn==1 && nminesp1<5){
         pickHelperp1.pickmines1(pickPosition, pickingScenep1, camera);
       }
@@ -2028,7 +2103,7 @@ function explode(){
   }
 
   function click(){
-    if(document.getElementById('popup_content_wrap').style.display=="none"){
+    if(document.getElementById('popup_content_wrap').style.display=="none"&& exploded==0 && animating==0 && cameramoving==0){
       if(turn==1){
         pickHelperp1.clickmines1(pickPosition, pickingScenep1, camera);
       }

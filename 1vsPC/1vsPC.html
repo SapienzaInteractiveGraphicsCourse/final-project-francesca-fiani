@@ -19,10 +19,10 @@
   	<body>
 		<canvas id="c"></canvas>
 		<div style="position: fixed; top:5%; left: 92%;">
-            <img id="home" src="../img/home.png" class="image" width="60%" height="60%" onclick="location.href='../home.html';" style="display:inline;">                  
+            <img id="home" src="../img/home.png" class="image" width="60%" height="60%" onclick="location.href='../home.html';" style="display:block;">                  
         </div>
 		<div style="position: fixed; top:80%; left: 90%;">
-            <img id="audiooff" src="../img/audiooff.png" class="image" width="70%" height="70%" onclick="play()" style="display:inline;">                  
+            <img id="audiooff" src="../img/audiooff.png" class="image" width="70%" height="70%" onclick="play()" style="display:block;">                  
         </div>
         <div style="position: fixed; top:80%; left: 90%;" >
             <img id ="audioon" src="../img/audioon.png" class="image" width="70%" height="70%" onclick="stop()" style="display: none;">                  
@@ -39,25 +39,30 @@
 			</center> 
 		</div>
 
-		<!---page load popup_content---->
+		<div class="popup_content_wrap" id="loader_wrap">
+			<img src="../img/loading.gif" style="display: block; width:40vw; height:35vh; margin-top: 25vh; margin-left: 30vw;" id="loader">
+			<img src="../img/loading_2.gif" style="display: block; width:40vw; height:35vh; margin-left: 30vw;" id="loader2">
+		</div>
+
 		<div class="popup_content_wrap" id="popup_content_wrap" style='display:none'>
 			<div class="popup_content_2" id="popup_content">
-				<img src="../img/cancel.png" id="cancel" class="image" width="3%" align="right" onclick="popup_content('hide','popup_content_wrap'); show();"> 
+				<img src="../img/cancel.png" id="cancel" class="image" width="3%" align="right" onclick="popup_content('hide','popup_content_wrap'); showvspc();"> 
 
 				<center>
 					<h1 id="boxtitle">The controls (1/4)</h1> 
 					<hr><hr>
 					<p id="boxtext">Welcome to the Chocobo farm! You are a farmer tasked with the job of planting gysahl greens to feed the chocobos in your farm. However, there is a lot of competition in the field, and your enemies are ready to do anything in order to get in your way. Someone has been coming during the night placing traps in your field. If you trigger a trap, your Chocobos will escape and eat all of your gysahl greens. What a disaster! Let's now go over the controls of the game.</p>
-					<img src="../img/place_mines.png" id="place_mines_pic" style="width: 50%; height:50%; display: none;">
-					<img src="../img/place_gysahl.png" id="place_gysahl_pic" style="width: 50%; height:50%; display: none;">
-					<img src="../img/game_flow.png" id="game_flow_pic" style="width: 50%; height:50%; display: none;">
-					<img src="../img/mines_counter.png" id="mines_counter_pic" style="width: 50%; height:50%; display: none;">
+					<img src="../img/place_mines.png" id="place_mines_pic" style="width: 30vw; height:30vh; display: none;">
+					<img src="../img/place_gysahl.png" id="place_gysahl_pic" style="width: 30vw; height:30vh; display: none;">
+					<img src="../img/game_flow_vspc.png" id="game_flow_pic" style="width: 30vw; height:30vh; display: none;">
+					<img src="../img/mines_counter_vspc.png" id="mines_counter_pic" style="width: 30vw; height:30vh; display: none;">
 				</center>
-				<input style="float:left; margin-left:130px; display: none;" type="submit" id="prev" value="< Previous" class="btn btn-primary" onClick="prevPage(); updateText();" />
-				<input style="float: right; margin-right:130px;" type="submit" id="next" value="Next >" class="btn btn-primary" onClick="nextPage(); updateText();" />
-				<input style="float: right; margin-right:130px; display: none;" type="submit" id="play" value="Let's play!" class="btn btn-primary" onClick="popup_content('hide', 'popup_content_wrap'); document.getElementById('audio2').play(); show();" />
+				<input style="float:left; margin-left:130px; display: none;" type="submit" id="prev" value="< Previous" class="btn btn-primary" onClick="prevPage(); updateTextvspc();" />
+				<input style="float: right; margin-right:130px;" type="submit" id="next" value="Next >" class="btn btn-primary" onClick="nextPage(); updateTextvspc();" />
+				<input style="float: right; margin-right:130px; display: none;" type="submit" id="play" value="Let's play!" class="btn btn-primary" onClick="popup_content('hide', 'popup_content_wrap'); document.getElementById('audio2').play(); showvspc();" />
 				<center>
-					<input style="display: none;" type="submit" id="home" value="Go to home screen" class="btn btn-primary" onClick="location.href='../home.html';" />
+					<input style="float: right; margin-right:200px; display: none;" type="submit" id="gohome" value="Go to home screen" class="btn btn-primary" onClick="location.href='../home.html';" />
+					<input style="float:left; margin-left:200px; display: none;" type="submit" id="retry" value="Try again" class="btn btn-primary" onClick="window.location.reload();" />
 					<input style="display: none;" type="submit" id="done" value="Got it!" class="btn btn-primary" onClick="popup_content('hide', 'popup_content_wrap');" />
 					<input style="display: none;" type="submit" id="start" value="Start the game!" class="btn btn-primary" onClick="popup_content('hide', 'popup_content_wrap');" />
 				</center>
@@ -66,10 +71,10 @@
 				<img src="../img/chocobo_explaining.png" id="expl" style="width: 64%;">
 				<img src="../img/chocobo_lost.png" id="lost" style="display:none; width:110%">                  
 				<img src="../img/chocobo_chest.png" id="chest" style="display:none; width:110%">      
-				<img src="../img/chocobo_ready.png" id="ready" style="display:none; width:110%">             
+				<img src="../img/chocobo_ready.png" id="ready" style="display:none; width:110%">    
+				<img src="../img/chocobo_won.png" id="won" style="display:none; width:110%">           
 			</div>
 		</div>
-		<!---end page load popup_content---->
   	</body>
 </html>
 
