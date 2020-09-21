@@ -1626,6 +1626,89 @@ let armature, bones;
       });
     }
 
+    
+    //dummy loaders for future models
+    {
+      const gltfLoader = new GLTFLoader();
+      gltfLoader.load('../models/turnip/scene.gltf', (gltf) => {
+        const root = gltf.scene;
+
+        scene.add(root);
+        dummy[0]=root;
+  
+        // compute the box that contains all the stuff
+        // from root and below
+          const box = new THREE.Box3().setFromObject(root);
+  
+          const size = box.getSize(new THREE.Vector3());
+          const boxCenter = box.getCenter(new THREE.Vector3());
+  
+          //Rescale the object to normalized space
+          var maxAxis = Math.max(size.x, size.y, size.z);
+          root.scale.multiplyScalar(7.0/maxAxis);
+          box.setFromObject(root);
+          box.getCenter(boxCenter);
+          box.getSize(size);
+          //Reposition to 0,halfY,0
+          root.position.copy(boxCenter).multiplyScalar(-1);
+          root.position.z+= 100;
+      });
+    }
+
+    {
+      const gltfLoader = new GLTFLoader();
+      gltfLoader.load('../models/rocks/scene.gltf', (gltf) => {
+        const root = gltf.scene;
+
+        scene.add(root);
+        dummy[1]=root;
+  
+        // compute the box that contains all the stuff
+        // from root and below
+          const box = new THREE.Box3().setFromObject(root);
+  
+          const size = box.getSize(new THREE.Vector3());
+          const boxCenter = box.getCenter(new THREE.Vector3());
+  
+          //Rescale the object to normalized space
+          var maxAxis = Math.max(size.x, size.y, size.z);
+          root.scale.multiplyScalar(7.0/maxAxis);
+          box.setFromObject(root);
+          box.getCenter(boxCenter);
+          box.getSize(size);
+          //Reposition to 0,halfY,0
+          root.position.copy(boxCenter).multiplyScalar(-1);
+          root.position.z+= 100;
+      });
+    }
+
+    {
+      const gltfLoader = new GLTFLoader();
+      gltfLoader.load('../models/Quina.gltf', (gltf) => {
+        const root = gltf.scene;
+
+        scene.add(root);
+        dummy[2]=root;
+        
+        // compute the box that contains all the stuff
+        // from root and below
+          const box = new THREE.Box3().setFromObject(root);
+  
+          const size = box.getSize(new THREE.Vector3());
+          const boxCenter = box.getCenter(new THREE.Vector3());
+  
+          //Rescale the object to normalized space
+          var maxAxis = Math.max(size.x, size.y, size.z);
+          root.scale.multiplyScalar(7.0/maxAxis);
+          box.setFromObject(root);
+          box.getCenter(boxCenter);
+          box.getSize(size);
+          //Reposition to 0,halfY,0
+          root.position.copy(boxCenter).multiplyScalar(-1);
+          root.position.z+= 100;
+      });
+    }
+
   //setting the render size
 
   function resizeRendererToDisplaySize(renderer) {
@@ -2023,9 +2106,12 @@ function explode(i, j){
   function render(time) {
     time *= 0.001;  // convert to seconds
 
-    if (scene.children.length>=121 && doneloading==0){
+    if (scene.children.length>=124 && doneloading==0){
       document.getElementById('loader_wrap').style.display='none';
       document.getElementById('popup_content_wrap').style.display='block';
+      scene.remove(dummy[0]);
+      scene.remove(dummy[1]);
+      scene.remove(dummy[2]);
       doneloading=1;
     }
 
