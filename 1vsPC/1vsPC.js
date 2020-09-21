@@ -368,7 +368,7 @@ function main() {
           }
           else{
             exploded=1;
-            explode();
+            explode(Math.floor((id-2)/8) - 3,(id-2)%8 - 4);
           }
         }
       }
@@ -1424,7 +1424,7 @@ let armature, bones;
           box.getSize(size);
           //Reposition to 0,halfY,0
           root.position.copy(boxCenter).multiplyScalar(-1);
-          root.position.z+= 100;
+          root.position.x+= 1000;
       });
     }
 
@@ -1451,7 +1451,7 @@ let armature, bones;
           box.getSize(size);
           //Reposition to 0,halfY,0
           root.position.copy(boxCenter).multiplyScalar(-1);
-          root.position.z+= 100;
+          root.position.x+= 1000;
       });
     }
 
@@ -1478,7 +1478,7 @@ let armature, bones;
           box.getSize(size);
           //Reposition to 0,halfY,0
           root.position.copy(boxCenter).multiplyScalar(-1);
-          root.position.z+= 100;
+          root.position.x+= 1000;
       });
     }
 
@@ -1573,7 +1573,7 @@ let armature, bones;
           if(minesp2[randomx][randomy]==1){
             done=1;
             exploded=2;
-            explode();
+            explode(randomx-3,randomy-4);
           }
           else{
             patchmat[randomx][randomy]=1;
@@ -1693,13 +1693,13 @@ let armature, bones;
   
           if(z==20){
             root.rotation.y+=(Math.PI);
-            gysahlp1[i+3][j+4] = new TWEEN.Tween(root.position, groupChocobo1).to({y:2}, 500);
+            gysahlp1[i+3][j+4] = root;
             setTimeout(function(){
               moveCamera(1);
             },500);
           }
           else if (z==-28){
-            gysahlp2[i+3][j+4] = new TWEEN.Tween(root.position, groupChocobo2).to({y:2}, 500);
+            gysahlp2[i+3][j+4] = root;
             setTimeout(function(){
               moveCamera(2);
             },500);
@@ -1744,7 +1744,7 @@ let armature, bones;
   }
   
   //function when you lose
-  function explode(){
+  function explode(i,j){
     document.getElementById('home').classList.remove('image');
     document.getElementById('home').onclick=function(){return false};
     document.getElementById('audioon').classList.remove('image');
@@ -1920,7 +1920,7 @@ let armature, bones;
     else if(tween2.length==60 && exploded==2){
       groupChocobo2.update();
     }
-    else if (tween3.length==16){
+    else if (tween3.length==16||(tween3.length==7 && (exploded==1||exploded==2))){
       TWEEN.update();
     }
 

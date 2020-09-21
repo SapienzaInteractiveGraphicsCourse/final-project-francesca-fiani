@@ -65,6 +65,7 @@ var cameramoving = 0;
 var doneloading = 0;
 
 var minemodels = [];
+var dummy = [];
 
 const idToPatchp1 = {};
 const idToPatchp2 = {};
@@ -1651,7 +1652,7 @@ let armature, bones;
           box.getSize(size);
           //Reposition to 0,halfY,0
           root.position.copy(boxCenter).multiplyScalar(-1);
-          root.position.z+= 100;
+          root.position.x+= 1000;
       });
     }
 
@@ -1678,7 +1679,7 @@ let armature, bones;
           box.getSize(size);
           //Reposition to 0,halfY,0
           root.position.copy(boxCenter).multiplyScalar(-1);
-          root.position.z+= 100;
+          root.position.x+= 1000;
       });
     }
 
@@ -1705,7 +1706,7 @@ let armature, bones;
           box.getSize(size);
           //Reposition to 0,halfY,0
           root.position.copy(boxCenter).multiplyScalar(-1);
-          root.position.z+= 100;
+          root.position.x+= 1000;
       });
     }
 

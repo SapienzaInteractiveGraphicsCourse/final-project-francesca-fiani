@@ -21,12 +21,13 @@
         <div style="position:fixed; bottom:0vh; right:33vw;">
             <img src="img/playnow.png" class="image" style="width:35vw; height: 40vh;" onclick="document.getElementById('popup_content_wrap_1').style.display='inline';"></a>               
         </div>
+        <audio src="../sounds/chocobo sound.mp3" type="audio/mp3" id="audio" ></audio>
             <div class="popup_content_wrap" id="popup_content_wrap">
                 <div class="popup_content" id="popup_content">
                     <center>
                         <h1>Warning</h1> 
             <hr><hr>			 <p style="margin-bottom: 1em;">To ensure a richer game experience, we suggest you to turn on the game volume by pressing the speaker button in the bottom right of the page. You can always pause the reproduction by pressing the same button a second time.</p>
-                        <input type="submit" name="submit" value="Continue" class="btn btn-primary" onClick="popup_content('hide','popup_content_wrap'); document.getElementById('audio2').play();" />
+                        <input type="submit" name="submit" value="Continue" class="btn btn-primary" onClick="popup_content('hide','popup_content_wrap'); document.getElementById('audio').play();" />
                     </center>
                 </div>
             </div>
