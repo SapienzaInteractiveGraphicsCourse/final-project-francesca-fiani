@@ -1730,6 +1730,18 @@ const pickHelperp1 = new GPUPickHelper();
 const pickHelperp2 = new GPUPickHelper();
 clearPickPosition();
 
+function sum(mat){
+  var sum=0;
+  for(var i=0; i<mat.length; i++){
+    const row = mat[i];
+    for(var j=0; j<row.length; j++){
+      sum+=row[j];
+    }
+  }
+  return sum;
+}
+ 
+
   //function for moving the camera
   function moveCamera(n){
     if (n==1){
@@ -1902,9 +1914,24 @@ clearPickPosition();
         if(z==20){
           root.rotation.y+=(Math.PI);
           gysahlp1[i+3][j+4] = root;
-          setTimeout(function(){
-            moveCamera(1);
-          },500);
+          if(sum(clickedp1)==43){
+            setTimeout(function(){
+              document.getElementById('boxtitle').innerHTML='Your avoided the mines!';
+              document.getElementById('boxtext').innerHTML="You managed to avoid all the traps your opponent set! You're really lucky! Your business can peacefully go on, and from now on you'll have to fight fair and square to become the best Chocobo farmer! ... Or maybe not?";
+              document.getElementById('gohome').style.display='block';
+              document.getElementById('retry').style.display='block';
+              document.getElementById('ready').style.display='none';
+              document.getElementById('start').style.display='none';
+              document.getElementById('place_gysahl_pic').style.display='none';
+              document.getElementById('won').style.display='block';
+              document.getElementById('popup_content_wrap').style.display='block';
+            },500);
+          }
+          else{
+            setTimeout(function(){
+              moveCamera(1);
+            },500);
+          }
         }
         else if (z==-28){
           gysahlp2[i+3][j+4] = root;

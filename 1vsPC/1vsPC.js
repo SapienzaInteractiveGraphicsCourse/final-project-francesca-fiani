@@ -1499,6 +1499,17 @@ let armature, bones;
   const pickHelperp1 = new GPUPickHelper();
   const pickHelperp2 = new GPUPickHelper();
   clearPickPosition();
+
+  function sum(mat){
+    var sum=0;
+    for(var i=0; i<mat.length; i++){
+      const row = mat[i];
+      for(var j=0; j<row.length; j++){
+        sum+=row[j];
+      }
+    }
+    return sum;
+  }
    
     //function for moving the camera
     function moveCamera(n){
@@ -1694,9 +1705,24 @@ let armature, bones;
           if(z==20){
             root.rotation.y+=(Math.PI);
             gysahlp1[i+3][j+4] = root;
-            setTimeout(function(){
-              moveCamera(1);
-            },500);
+            if(sum(clickedp1)==43){
+              setTimeout(function(){
+                document.getElementById('boxtitle').innerHTML='Your avoided the mines!';
+                document.getElementById('boxtext').innerHTML="You managed to avoid all the traps your opponent set! You're really lucky! Your business can peacefully go on, and from now on you'll have to fight fair and square to become the best Chocobo farmer! ... Or maybe not?";
+                document.getElementById('gohome').style.display='block';
+                document.getElementById('retry').style.display='block';
+                document.getElementById('ready').style.display='none';
+                document.getElementById('start').style.display='none';
+                document.getElementById('place_gysahl_pic').style.display='none';
+                document.getElementById('won').style.display='block';
+                document.getElementById('popup_content_wrap').style.display='block';
+              },500);
+            }
+            else{
+              setTimeout(function(){
+                moveCamera(1);
+              },500);
+            }
           }
           else if (z==-28){
             gysahlp2[i+3][j+4] = root;
@@ -1877,7 +1903,7 @@ let armature, bones;
         tween2[27].start();
         if(groupChocobo2.getAll()!=[]){
           setTimeout(function(){ 
-            document.getElementById('boxtitle').innerHTML='The bomb exploded!';
+            document.getElementById('boxtitle').innerHTML='Your trap worked!';
             document.getElementById('boxtext').innerHTML="Your opponent triggered one of the traps you set! You won, and are officially the best Chocobo farmer!";
             document.getElementById('gohome').style.display='block';
             document.getElementById('retry').style.display='block';
@@ -2008,7 +2034,7 @@ let armature, bones;
 //function to intialize the position of the mines, RANDOM VERSION
 
 function initializeMines(posmines){
-  var nminesp1 = 0;
+  nminesp1 = 0;
   while (nminesp1<5){
     const randomx = Math.floor(Math.random() * 6);
     const randomy = Math.floor(Math.random() * 8);
